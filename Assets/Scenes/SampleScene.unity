@@ -1457,6 +1457,8 @@ MonoBehaviour:
   countText: {fileID: 1278076034}
   winText: {fileID: 989833557}
   speed: 10
+  jumpForce: 5
+  cameraTransform: {fileID: 330585546}
 --- !u!114 &1471025393
 MonoBehaviour:
   m_ObjectHideFlags: 0
