@@ -11,6 +11,7 @@ public class PlayerController : MonoBehaviour
 
     public float speed = 0;
     public float jumpForce = 5f;
+    public float maxSpeed = 0;
 
     public Transform cameraTransform;
 
@@ -20,6 +21,8 @@ public class PlayerController : MonoBehaviour
 
     private float movementX;
     private float movementY;
+
+    private bool isGrounded;
 
     void Start()
     {
@@ -40,6 +43,24 @@ public class PlayerController : MonoBehaviour
         movementY = movementVector.y;
     }
 
+    void OnFreeze(InputValue freezeValue)
+    {
+        if (freezeValue.isPressed)
+        {
+            rb.linearVelocity = Vector3.zero;
+            rb.angularVelocity = Vector3.zero;
+        }
+    }
+
+    void OnJump(InputValue jumpValue)
+    {
+        if (jumpValue.isPressed && isGrounded)
+        {
+            rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+            isGrounded = false;
+        }
+    }
+
     void FixedUpdate()
     {
         Vector3 camForward = cameraTransform.forward;
@@ -53,19 +74,30 @@ public class PlayerController : MonoBehaviour
 
         Vector3 movement = camForward * movementY + camRight * movementX;
 
-        rb.AddForce(movement * speed);
+        rb.AddForce(movement * speed, ForceMode.Acceleration);
+
+        Vector3 horizontalVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
+
+        if (horizontalVelocity.magnitude > maxSpeed)
+        {
+            horizontalVelocity = horizontalVelocity.normalized * maxSpeed;
+
+            rb.linearVelocity = new Vector3(horizontalVelocity.x, rb.linearVelocity.y, horizontalVelocity.z);
+        }
 
         if (movement.sqrMagnitude > 0.1f)
         {
             Quaternion targetRotation = Quaternion.LookRotation(movement);
 
-            rb.MoveRotation(
-                Quaternion.Slerp(
-                    rb.rotation,
-                    targetRotation,
-                    10f * Time.deltaTime
-                )
-            );
+            rb.MoveRotation(Quaternion.Slerp(rb.rotation, targetRotation, 10f * Time.fixedDeltaTime));
+        }
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Ground"))
+        {
+            isGrounded = true;
         }
     }
 
@@ -86,17 +118,15 @@ public class PlayerController : MonoBehaviour
             SetCountText();
             other.gameObject.SetActive(false);
         }
-
-        
     }
 
     void SetCountText()
     {
         countText.text = "Count: " + PickupCount.ToString();
-        if(PickupCount >= 4)
+
+        if (PickupCount >= 4)
         {
             winText.gameObject.SetActive(true);
         }
     }
-
 }
