@@ -6,8 +6,15 @@ public class MainMenuScript : MonoBehaviour
 {
     public GameObject Buttons;
     public GameObject SettingsPanel;
+    public GameObject CreditsPanel;
 
     public AudioMixer audioMixer;
+
+    public void Start()
+    {
+        SettingsPanel.SetActive(false);
+        CreditsPanel.SetActive(false);
+    }
 
     public void PlayGame()
     {
@@ -28,7 +35,14 @@ public class MainMenuScript : MonoBehaviour
 
     public void OpenCredits()
     {
-        SceneManager.LoadScene("Lobby");
+        Buttons.SetActive(false);
+        CreditsPanel.SetActive(true);
+    }
+
+    public void CloseCredits()
+    {
+        CreditsPanel.SetActive(false);
+        Buttons.SetActive(true);
     }
 
     public void QuitGame()
