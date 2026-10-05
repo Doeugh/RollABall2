@@ -10,6 +10,10 @@ public class MainMenuUIManager : MonoBehaviour
     public GameObject mainStoryPanel;
     public GameObject RLGLPanel;
     public GameObject dalgonaPanel;
+    public GameObject tugOfWarPanel;
+    public GameObject jumpRopePanel;
+    public GameObject minglePanel;
+    public GameObject squidGamePanel;
 
     private void Start()
     {
@@ -58,6 +62,34 @@ public class MainMenuUIManager : MonoBehaviour
         dalgonaPanel.SetActive(true);
     }
 
+    public void ShowTugOfWarUI()
+    {
+        HideAllUI();
+
+        tugOfWarPanel.SetActive(true);
+    }
+
+    public void ShowJumpRopeUI()
+    {
+        HideAllUI();
+
+        jumpRopePanel.SetActive(true);
+    }
+
+    public void ShowMingleUI()
+    {
+        HideAllUI();
+
+        minglePanel.SetActive(true);
+    }
+
+    public void ShowSquidGameUI()
+    {
+        HideAllUI();
+
+        squidGamePanel.SetActive(true);
+    }
+
     public void HideAllUI()
     {
         mainMenuPanel.SetActive(false);
@@ -66,5 +98,9 @@ public class MainMenuUIManager : MonoBehaviour
         mainStoryPanel.SetActive(false);
         RLGLPanel.SetActive(false);
         dalgonaPanel.SetActive(false);
+        tugOfWarPanel.SetActive(false);
+        jumpRopePanel.SetActive(false);
+        minglePanel.SetActive(false);
+        squidGamePanel.SetActive(false);
     }
 }

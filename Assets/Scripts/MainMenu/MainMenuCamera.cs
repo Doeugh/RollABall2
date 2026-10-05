@@ -48,6 +48,34 @@ public class MainMenuCamera : MonoBehaviour
         StartCoroutine(MoveToWaypoint(dalognaWaypoint));
     }
 
+    public void GoToTugOfWar()
+    {
+        uiManager.HideAllUI();
+
+        StartCoroutine(MoveToWaypoint(tugOFWarWaypoint));
+    }
+
+    public void GoToJumpRope()
+    {
+        uiManager.HideAllUI();
+
+        StartCoroutine(MoveToWaypoint(jumpRopeWaypoint));
+    }
+
+    public void GoToMingle()
+    {
+        uiManager.HideAllUI();
+
+        StartCoroutine(MoveToWaypoint(MingleWaypoint));
+    }
+
+    public void GoToSquidGame()
+    {
+        uiManager.HideAllUI();
+
+        StartCoroutine(MoveToWaypoint(SquidGameWaypoint));
+    }
+
     IEnumerator MoveToWaypoint(Transform waypoint)
     {
         Vector3 startPosition = transform.position;
@@ -92,6 +120,21 @@ public class MainMenuCamera : MonoBehaviour
         {
             uiManager.ShowDalgonaUI();
         }
-
+        else if (waypoint == tugOFWarWaypoint)
+        {
+            uiManager.ShowTugOfWarUI();
+        }
+        else if (waypoint == jumpRopeWaypoint)
+        {
+            uiManager.ShowJumpRopeUI();
+        }
+        else if (waypoint == MingleWaypoint)
+        {
+            uiManager.ShowMingleUI();
+        }
+        else if (waypoint == SquidGameWaypoint)
+        {
+            uiManager.ShowSquidGameUI();
+        }
     }
 }

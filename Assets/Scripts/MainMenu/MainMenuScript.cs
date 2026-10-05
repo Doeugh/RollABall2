@@ -53,6 +53,26 @@ public class MainMenuScript : MonoBehaviour
         cameraController.GoToDalgona();
     }
 
+    public void OpenTugOfWar()
+    {
+        cameraController.GoToTugOfWar();
+    }
+
+    public void OpenJumpRope()
+    {
+        cameraController.GoToJumpRope();
+    }
+
+    public void OpenMingle()
+    {
+        cameraController.GoToMingle();
+    }
+
+    public void OpenSquidGame()
+    {
+        cameraController.GoToSquidGame();
+    }
+
     public void OpenMainMenu()
     {
         cameraController.GoToStartingPoint();
