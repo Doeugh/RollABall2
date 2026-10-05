@@ -3306,6 +3306,7 @@ MonoBehaviour:
   pointB: {fileID: 31907471}
   pointC: {fileID: 1894673615}
   speed: 2
+  delay: 0
 --- !u!4 &426977748
 Transform:
   m_ObjectHideFlags: 0
@@ -5328,7 +5329,8 @@ MonoBehaviour:
   pointA: {fileID: 910208040}
   pointB: {fileID: 1269173390}
   pointC: {fileID: 1676649491}
-  speed: 1.8
+  speed: 2
+  delay: 1.8
 --- !u!1 &736757919
 GameObject:
   m_ObjectHideFlags: 0
@@ -8531,6 +8533,7 @@ MonoBehaviour:
   pointB: {fileID: 2074111061}
   pointC: {fileID: 956178085}
   speed: 1.6
+  delay: 0.2
 --- !u!1 &1246126022
 GameObject:
   m_ObjectHideFlags: 0
