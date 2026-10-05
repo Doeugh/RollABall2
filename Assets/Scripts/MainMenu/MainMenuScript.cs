@@ -4,17 +4,9 @@ using UnityEngine.SceneManagement;
 
 public class MainMenuScript : MonoBehaviour
 {
-    public GameObject Buttons;
-    public GameObject SettingsPanel;
-    public GameObject CreditsPanel;
-
     public AudioMixer audioMixer;
-
-    public void Start()
-    {
-        SettingsPanel.SetActive(false);
-        CreditsPanel.SetActive(false);
-    }
+    public MainMenuCamera cameraController;
+    public MainMenuUIManager uiManager;
 
     public void PlayGame()
     {
@@ -23,31 +15,37 @@ public class MainMenuScript : MonoBehaviour
 
     public void OpenSettings()
     {
-        Buttons.SetActive(false);
-        SettingsPanel.SetActive(true);
+        uiManager.ShowSettings();
     }
 
     public void CloseSettings()
     {
-        SettingsPanel.SetActive(false);
-        Buttons.SetActive(true);
+        uiManager.ShowMainButtons();
     }
 
     public void OpenCredits()
     {
-        Buttons.SetActive(false);
-        CreditsPanel.SetActive(true);
+        uiManager.ShowCredits();
     }
 
     public void CloseCredits()
     {
-        CreditsPanel.SetActive(false);
-        Buttons.SetActive(true);
+        uiManager.ShowMainButtons();
     }
 
     public void QuitGame()
     {
         Application.Quit();
+    }
+
+    public void OpenMainStory()
+    {
+        cameraController.GoToMainStory();
+    }
+
+    public void OpenMainMenu()
+    {
+        cameraController.GoToStartingPoint();
     }
 
     public void SetVolume(float volume)
