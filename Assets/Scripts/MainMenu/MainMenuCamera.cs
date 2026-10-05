@@ -34,6 +34,20 @@ public class MainMenuCamera : MonoBehaviour
         StartCoroutine(MoveToWaypoint(startingPoint));
     }
 
+    public void GoToRLGL()
+    {
+        uiManager.HideAllUI();
+
+        StartCoroutine(MoveToWaypoint(RLGLWaypoint));
+    }
+
+    public void GoToDalgona()
+    {
+        uiManager.HideAllUI();
+
+        StartCoroutine(MoveToWaypoint(dalognaWaypoint));
+    }
+
     IEnumerator MoveToWaypoint(Transform waypoint)
     {
         Vector3 startPosition = transform.position;
@@ -69,6 +83,14 @@ public class MainMenuCamera : MonoBehaviour
         else if (waypoint == startingPoint)
         {
             uiManager.ShowMainButtons();
+        }
+        else if (waypoint == RLGLWaypoint)
+        {
+            uiManager.ShowRLGLUI();
+        }
+        else if (waypoint == dalognaWaypoint)
+        {
+            uiManager.ShowDalgonaUI();
         }
 
     }

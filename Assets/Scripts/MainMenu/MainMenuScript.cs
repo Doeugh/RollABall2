@@ -43,6 +43,16 @@ public class MainMenuScript : MonoBehaviour
         cameraController.GoToMainStory();
     }
 
+    public void OpenRLGL()
+    {
+        cameraController.GoToRLGL();
+    }
+
+    public void OpenDalgona()
+    {
+        cameraController.GoToDalgona();
+    }
+
     public void OpenMainMenu()
     {
         cameraController.GoToStartingPoint();
