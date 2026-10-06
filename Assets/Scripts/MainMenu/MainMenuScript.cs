@@ -78,6 +78,11 @@ public class MainMenuScript : MonoBehaviour
         cameraController.GoToStartingPoint();
     }
 
+    public void PlayRLGL()
+    {
+        SceneManager.LoadScene("RedLightGreenLight");
+    }
+
     public void SetVolume(float volume)
     {
         audioMixer.SetFloat("Volume", volume);

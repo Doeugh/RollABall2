@@ -3,6 +3,7 @@ using UnityEngine;
 public class MainMenuUIManager : MonoBehaviour
 {
     public GameObject mainMenuPanel;
+    public GameObject levelSelectPanel;
 
     public GameObject settingsPanel;
     public GameObject creditsPanel;
@@ -25,6 +26,7 @@ public class MainMenuUIManager : MonoBehaviour
         HideAllUI();
 
         mainMenuPanel.SetActive(true);
+        levelSelectPanel.SetActive(true);
     }
 
     public void ShowSettings()
