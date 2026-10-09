@@ -78,9 +78,21 @@ public class MainMenuScript : MonoBehaviour
         cameraController.GoToStartingPoint();
     }
 
+    public void PlayStoryMode()
+    {
+        SceneManager.LoadScene("Prolouge");
+    }
+
     public void PlayRLGL()
     {
-        SceneManager.LoadScene("RedLightGreenLight");
+        LevelTransporter.SetStartingLevel(0);
+        SceneManager.LoadScene("Lobby");
+    }
+
+    public void PlayDalgona()
+    {
+        LevelTransporter.SetStartingLevel(1);
+        SceneManager.LoadScene("Lobby");
     }
 
     public void SetVolume(float volume)

@@ -12,11 +12,17 @@ EditorBuildSettings:
     path: Assets/Scenes/Menus/MainMenu.unity
     guid: 53aaaa86d7a2fa341ae2e16612bc9429
   - enabled: 1
+    path: Assets/Scenes/Prolouge.unity
+    guid: 3ca5cf867047d064ea7e7a408adbef82
+  - enabled: 1
     path: Assets/Scenes/Lobby.unity
     guid: c8363353cc69b0d4895de9f9836ebda6
   - enabled: 1
     path: Assets/Scenes/Games/RedLightGreenLight.unity
     guid: 2e748a6fafd13284898b276a01f8b02c
+  - enabled: 1
+    path: Assets/Scenes/Games/Dalgona.unity
+    guid: 3382ee26050ad56428e7d42beba898a2
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0
