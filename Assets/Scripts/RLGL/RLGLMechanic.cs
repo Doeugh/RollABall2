@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections.Generic;
 
-public class TrafficLightZone : MonoBehaviour
+public class RLGLMechanic : MonoBehaviour
 {
     public enum LightState { Green, SlowDown, Red }
     public LightState currentState = LightState.Green;
