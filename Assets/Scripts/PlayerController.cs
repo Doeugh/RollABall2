@@ -24,6 +24,8 @@ public class PlayerController : MonoBehaviour
 
     private bool isGrounded;
 
+    public bool canMove = false;
+
     void Start()
     {
         PickupCount = 0;
@@ -63,6 +65,13 @@ public class PlayerController : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (!canMove)
+        {
+            rb.linearVelocity = new Vector3(0f, rb.linearVelocity.y, 0f);
+            rb.angularVelocity = Vector3.zero;
+            return;
+        }
+
         Vector3 camForward = cameraTransform.forward;
         Vector3 camRight = cameraTransform.right;
 
