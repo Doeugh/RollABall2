@@ -1,7 +1,10 @@
 using UnityEngine;
+using UnityEngine.Playables;
 
 public class LevelWaypointTeleporter : MonoBehaviour
 {
+    public PlayableDirector elevatorDoorTimeline;
+
     public Transform[] waypoints = new Transform[6];
 
     private void OnTriggerEnter(Collider other)
@@ -22,6 +25,9 @@ public class LevelWaypointTeleporter : MonoBehaviour
             {
                 player.position = waypoints[index].position;
                 player.rotation = waypoints[index].rotation;
+
+                elevatorDoorTimeline.time = 0;
+                elevatorDoorTimeline.Play();
             }
             else
             {
