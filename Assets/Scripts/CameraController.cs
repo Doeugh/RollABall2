@@ -1,3 +1,4 @@
+
 using UnityEngine;
 
 public class CameraController : MonoBehaviour
@@ -7,6 +8,10 @@ public class CameraController : MonoBehaviour
     public float distance = 5f;
     public float height = 2f;
     public float rotationSpeed = 100f;
+
+    public float collisionRadius = 0.3f;
+    public float collisionOffset = 0.1f;
+    public LayerMask collisionLayers;
 
     private float yaw = 0f;
     private float pitch = 20f;
@@ -23,10 +28,21 @@ public class CameraController : MonoBehaviour
 
         Quaternion rotation = Quaternion.Euler(pitch, yaw, 0f);
 
+        Vector3 targetPosition = player.transform.position + Vector3.up * height;
+
         Vector3 offset = rotation * new Vector3(0f, 0f, -distance);
 
-        transform.position = player.transform.position + offset + Vector3.up * height;
+        Vector3 desiredPosition = targetPosition + offset;
 
-        transform.LookAt(player.transform.position + Vector3.up * height);
+        Vector3 direction = desiredPosition - targetPosition;
+        float desiredDistance = direction.magnitude;
+
+        if (Physics.SphereCast(targetPosition, collisionRadius, direction.normalized, out RaycastHit hit, desiredDistance, collisionLayers))
+        {
+            desiredPosition = targetPosition + direction.normalized * Mathf.Max(hit.distance - collisionOffset, 0.1f);
+        }
+
+        transform.position = desiredPosition;
+        transform.LookAt(targetPosition);
     }
 }
