@@ -41,8 +41,7 @@ public class RLGLMechanic : MonoBehaviour
         {
             foreach (Rigidbody playerRb in playersInZone)
             {
-                if (playerRb != null &&
-                    playerRb.linearVelocity.magnitude > movementThreshold)
+                if (playerRb != null && playerRb.linearVelocity.magnitude > movementThreshold)
                 {
                     SceneManager.LoadScene("YouDiedScreen");
                     return;
@@ -104,7 +103,10 @@ public class RLGLMechanic : MonoBehaviour
     private void PlayRandomClip(AudioClip[] clips)
     {
         if (audioSource == null || clips == null || clips.Length == 0)
+        {
             return;
+        }
+            
 
         if (RLGLIntro.IsIntroPlaying)
         {
@@ -129,7 +131,9 @@ public class RLGLMechanic : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if (!other.CompareTag(playerTag))
+        {
             return;
+        }
 
         Rigidbody rb = other.attachedRigidbody;
 
@@ -142,8 +146,10 @@ public class RLGLMechanic : MonoBehaviour
     private void OnTriggerExit(Collider other)
     {
         if (!other.CompareTag(playerTag))
+        {
             return;
-
+        }
+            
         Rigidbody rb = other.attachedRigidbody;
 
         if (rb != null)
