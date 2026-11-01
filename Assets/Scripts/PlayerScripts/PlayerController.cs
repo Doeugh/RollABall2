@@ -6,9 +6,6 @@ using TMPro;
 
 public class PlayerController : MonoBehaviour
 {
-    public TMP_Text countText;
-    public TMP_Text winText;
-
     public float speed = 0;
     public float jumpForce = 5f;
     public float maxSpeed = 0;
@@ -16,8 +13,6 @@ public class PlayerController : MonoBehaviour
     public Transform cameraTransform;
 
     private Rigidbody rb;
-
-    private int PickupCount;
 
     private float movementX;
     private float movementY;
@@ -28,11 +23,7 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
-        PickupCount = 0;
-        SetCountText();
-
         rb = GetComponent<Rigidbody>();
-        winText.gameObject.SetActive(false);
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
@@ -124,23 +115,4 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.CompareTag("PickUp"))
-        {
-            PickupCount++;
-            SetCountText();
-            other.gameObject.SetActive(false);
-        }
-    }
-
-    void SetCountText()
-    {
-        countText.text = "Count: " + PickupCount.ToString();
-
-        if (PickupCount >= 4)
-        {
-            winText.gameObject.SetActive(true);
-        }
-    }
 }
