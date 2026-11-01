@@ -29,14 +29,6 @@ public class LevelWaypointTeleporter : MonoBehaviour
                 elevatorDoorTimeline.time = 0;
                 elevatorDoorTimeline.Play();
             }
-            else
-            {
-                Debug.LogError("Waypoint is missing at index: " + index);
-            }
-        }
-        else
-        {
-            Debug.LogError("Invalid waypoint index: " + index);
         }
     }
 }

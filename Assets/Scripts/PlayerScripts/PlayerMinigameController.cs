@@ -45,7 +45,9 @@ public class PlayerMinigameController : MonoBehaviour
     void OnJump(InputValue jumpValue)
     {
         if (!canMove)
+        {
             return;
+        }
 
         if (jumpValue.isPressed && isGrounded)
         {
@@ -69,34 +71,20 @@ public class PlayerMinigameController : MonoBehaviour
 
         rb.AddForce(movement * speed, ForceMode.Acceleration);
 
-        Vector3 horizontalVelocity = new Vector3(
-            rb.linearVelocity.x,
-            0f,
-            rb.linearVelocity.z
-        );
+        Vector3 horizontalVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
 
         if (horizontalVelocity.magnitude > maxSpeed)
         {
             horizontalVelocity = horizontalVelocity.normalized * maxSpeed;
 
-            rb.linearVelocity = new Vector3(
-                horizontalVelocity.x,
-                rb.linearVelocity.y,
-                horizontalVelocity.z
-            );
+            rb.linearVelocity = new Vector3( horizontalVelocity.x, rb.linearVelocity.y, horizontalVelocity.z);
         }
 
         if (movement.sqrMagnitude > 0.1f)
         {
             Quaternion targetRotation = Quaternion.LookRotation(movement);
 
-            rb.MoveRotation(
-                Quaternion.Slerp(
-                    rb.rotation,
-                    targetRotation,
-                    10f * Time.fixedDeltaTime
-                )
-            );
+            rb.MoveRotation(Quaternion.Slerp(rb.rotation, targetRotation, 10f * Time.fixedDeltaTime));
         }
     }
 
