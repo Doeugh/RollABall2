@@ -40,6 +40,19 @@ public class LevelTransporter : MonoBehaviour
         currentGameIndex++;
     }
 
+    public static void ReloadCurrentGame()
+    {
+        if (currentGameIndex >= 0 && currentGameIndex < gameScenes.Length)
+        {
+            SceneManager.LoadScene(gameScenes[currentGameIndex]);
+        }
+        else
+        {
+            Debug.Log("All games completed");
+        }
+    }
+
+
     public static void SetStartingLevel(int levelIndex)
     {
         if (levelIndex < 0 || levelIndex >= gameScenes.Length)
