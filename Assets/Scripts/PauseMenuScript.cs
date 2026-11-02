@@ -1,9 +1,15 @@
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.SceneManagement;
 
 public class PauseMenuScript : MonoBehaviour
 {
     public static PauseMenuScript Instance;
+
+    public GameObject controlsMenu;
+    public GameObject optionsMenu;
+
+    public AudioMixer audioMixer;
 
     [SerializeField] private GameObject pauseMenuUI;
 
@@ -40,10 +46,47 @@ public class PauseMenuScript : MonoBehaviour
         }
     }
 
+    public void ShowControls()
+    {
+        HideAll();
+
+        controlsMenu.SetActive(true);
+    }
+
+    public void HideControls()
+    {
+        HideAll();
+        pauseMenuUI.SetActive(true);
+    }
+
+    public void ShowOptions()
+    {
+        HideAll();
+        optionsMenu.SetActive(true);
+    }
+
+    public void HideOptions()
+    {
+        HideAll();
+        pauseMenuUI.SetActive(true);
+    }
+
     public static void QuitToMainMenu()
     {
         Time.timeScale = 1f;
 
         SceneManager.LoadScene("MainMenu");
+    }
+
+    public void SetVolume(float volume)
+    {
+        audioMixer.SetFloat("Volume", volume);
+    }
+
+    public void HideAll()
+    {
+        optionsMenu.SetActive(false);
+        controlsMenu.SetActive(false);
+        pauseMenuUI.SetActive(false);
     }
 }

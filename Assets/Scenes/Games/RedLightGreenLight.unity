@@ -5772,7 +5772,7 @@ GameObject:
   - component: {fileID: 341515881}
   - component: {fileID: 341515886}
   m_Layer: 0
-  m_Name: Cube
+  m_Name: Play Area
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5800,7 +5800,7 @@ MonoBehaviour:
   greenColor: {r: 0, g: 1, b: 0, a: 1}
   yellowColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   redColor: {r: 1, g: 0, b: 0, a: 1}
-  movementThreshold: 5
+  movementThreshold: 1
   playerTag: Player
   audioSource: {fileID: 341515886}
   greenLightClips:

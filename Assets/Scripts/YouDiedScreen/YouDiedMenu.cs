@@ -13,6 +13,12 @@ public class YouDiedMenu : MonoBehaviour
 
     private bool isRunning;
 
+    public void Start()
+    {
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+    }
+
     public void GoToMainMenu()
     {
         if (isRunning)

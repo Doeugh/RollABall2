@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 using UnityEngine.SceneManagement;
 using System.Collections.Generic;
 
@@ -32,11 +33,23 @@ public class RLGLMechanic : MonoBehaviour
 
     private void Start()
     {
+        StartCoroutine(WaitForIntro());
+    }
+
+    private IEnumerator WaitForIntro()
+    {
+        yield return new WaitUntil(() => !RLGLIntro.IsIntroPlaying);
+
         SetState(LightState.Green);
     }
 
     private void Update()
     {
+        if (RLGLIntro.IsIntroPlaying)
+        {
+            return;
+        }
+
         if (currentState == LightState.Red)
         {
             foreach (Rigidbody playerRb in playersInZone)
