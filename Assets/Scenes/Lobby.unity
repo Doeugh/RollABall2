@@ -1212,7 +1212,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6012a2b8e27bb254f882aa4f5f44b648, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  elevatorDoorTimeline: {fileID: 1391533357}
+  elevatorDoorTimelines:
+  - {fileID: 1391533357}
+  - {fileID: 993233295}
+  - {fileID: 1301829795}
+  - {fileID: 825068664}
+  - {fileID: 244843172}
+  - {fileID: 1993823381}
   waypoints:
   - {fileID: 1586456981}
   - {fileID: 766356689}

@@ -10777,6 +10777,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 88448481}
     m_Modifications:
+    - target: {fileID: -8986644126781700066, guid: 4696716a3a6c8324f8443c69f75f1f4e, type: 3}
+      propertyPath: m_Lightmapping
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 4696716a3a6c8324f8443c69f75f1f4e, type: 3}
       propertyPath: m_LocalScale.x
       value: 3
@@ -10829,9 +10833,21 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -5196256739042982803, guid: 4696716a3a6c8324f8443c69f75f1f4e, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -212568367426663155, guid: 4696716a3a6c8324f8443c69f75f1f4e, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 4696716a3a6c8324f8443c69f75f1f4e, type: 3}
       propertyPath: m_Name
       value: SQ3
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 4696716a3a6c8324f8443c69f75f1f4e, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1003978867225744011, guid: 4696716a3a6c8324f8443c69f75f1f4e, type: 3}
       propertyPath: m_IsActive

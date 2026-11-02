@@ -3,7 +3,7 @@ using UnityEngine.Playables;
 
 public class LevelWaypointTeleporter : MonoBehaviour
 {
-    public PlayableDirector elevatorDoorTimeline;
+    public PlayableDirector[] elevatorDoorTimelines = new PlayableDirector[6];
 
     public Transform[] waypoints = new Transform[6];
 
@@ -26,8 +26,19 @@ public class LevelWaypointTeleporter : MonoBehaviour
                 player.position = waypoints[index].position;
                 player.rotation = waypoints[index].rotation;
 
-                elevatorDoorTimeline.time = 0;
-                elevatorDoorTimeline.Play();
+                if (index < elevatorDoorTimelines.Length && elevatorDoorTimelines[index] != null)
+                {
+                    PlayableDirector director = elevatorDoorTimelines[index];
+
+                    director.Stop();
+                    director.time = 0;
+                    director.Evaluate();
+                    director.Play();
+                }
+                else
+                {
+                    Debug.LogWarning("No Timeline assigned for game index: " + index);
+                }
             }
         }
     }

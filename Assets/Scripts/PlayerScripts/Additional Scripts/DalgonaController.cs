@@ -34,6 +34,8 @@ public class DalgonaController : MonoBehaviour
 
         CountTotalLines();
 
+        RecoverPlayer();
+
         UpdateProgressUI();
         UpdateAttemptsUI();
     }
@@ -41,7 +43,9 @@ public class DalgonaController : MonoBehaviour
     private void Update()
     {
         if (isComplete || isRecovering)
+        {
             return;
+        }
 
         checkTimer += Time.deltaTime;
 
@@ -54,11 +58,11 @@ public class DalgonaController : MonoBehaviour
 
     private void CheckForLine()
     {
-        bool touchingLine = Physics.CheckBox(
-            traceChecker.bounds.center,
-            traceChecker.bounds.extents,
-            traceChecker.transform.rotation,
-            traceLayer
+        SphereCollider sphere = traceChecker as SphereCollider;
+
+        bool touchingLine = Physics.CheckSphere(
+            sphere.transform.TransformPoint(sphere.center),
+            sphere.radius * Mathf.Max(sphere.transform.lossyScale.x, sphere.transform.lossyScale.y,sphere.transform.lossyScale.z), traceLayer
         );
 
         if (touchingLine)
@@ -75,10 +79,15 @@ public class DalgonaController : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if (isComplete)
+        {
             return;
+        }
+            
 
         if (((1 << other.gameObject.layer) & traceLayer) == 0)
+        {
             return;
+        }
 
         RegisterLine(other.gameObject);
     }
@@ -86,7 +95,9 @@ public class DalgonaController : MonoBehaviour
     private void RegisterLine(GameObject line)
     {
         if (registeredLines.Contains(line))
+        {
             return;
+        }
 
         registeredLines.Add(line);
 
@@ -128,7 +139,9 @@ public class DalgonaController : MonoBehaviour
     private void LoseAttempt()
     {
         if (isRecovering || isComplete)
+        {
             return;
+        }
 
         attempts--;
 
