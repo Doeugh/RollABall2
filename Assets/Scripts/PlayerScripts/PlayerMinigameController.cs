@@ -100,8 +100,7 @@ public class PlayerMinigameController : MonoBehaviour
     {
         if (value.isPressed)
         {
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
+            PauseMenuScript.TogglePause();
         }
     }
 }
