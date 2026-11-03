@@ -1,8 +1,10 @@
-
 using System.Collections;
 using UnityEngine;
 using TMPro;
 using UnityEngine.InputSystem;
+using UnityEngine.Events;
+using UnityEngine.SceneManagement;
+using UnityEngine.Playables;
 
 public class PrologueManager : MonoBehaviour
 {
@@ -29,9 +31,24 @@ public class PrologueManager : MonoBehaviour
     public Camera dialogueCamera;
     public Camera gameplayCamera;
 
+    private bool roundActive = false;
+    private bool roundFinished = false;
+
+    private float remainingTime;
+    public float timeLimit = 15f;
+
+    public TMP_Text timerText;
+
+    public float endingDelay = 3f;
+
+    public Transform playerStartingPosition;
+
+    public PlayableDirector winTimeline;
+    public PlayableDirector loseTimeline;
+
     private void Start()
     {
-        playerController.enabled = false;
+        playerController.canMove = false;
 
         playerRb.linearVelocity = Vector3.zero;
         playerRb.angularVelocity = Vector3.zero;
@@ -92,9 +109,7 @@ public class PrologueManager : MonoBehaviour
 
         controlsUI.SetActive(true);
 
-        playerController.enabled = true;
-
-        //round start will go here
+        StartCoroutine(StartRound());
     }
 
     private IEnumerator FadeFromBlack()
@@ -144,4 +159,110 @@ public class PrologueManager : MonoBehaviour
 
         yield return null;
     }
+
+    private IEnumerator StartRound()
+    {
+        playerRb.position = playerStartingPosition.position;
+        playerRb.rotation = playerStartingPosition.rotation;
+
+        playerRb.linearVelocity = Vector3.zero;
+        playerRb.angularVelocity = Vector3.zero;
+
+        controlsUI.SetActive(true);
+        playerController.canMove = true;
+
+        yield return new WaitForSeconds(1f);
+
+        remainingTime = timeLimit;
+        roundActive = true;
+
+        timerText.gameObject.SetActive(true);
+
+        while (remainingTime > 0 && roundActive)
+        {
+            remainingTime -= Time.deltaTime;
+
+            timerText.text = "Time: " + Mathf.CeilToInt(remainingTime);
+
+            yield return null;
+        }
+
+        if (roundActive)
+        {
+            if (DajkiTrigger.IsInsideDakji)
+            {
+                PlayerWon();
+            }
+            else
+            {
+                PlayerLost();
+            }
+        }
+    }
+
+    public void PlayerWon()
+    {
+        if (!roundActive || roundFinished)
+        {
+            return;
+        }
+
+        roundFinished = true;
+        roundActive = false;
+
+        controlsUI.SetActive(false);
+
+        StartCoroutine(WinSequence());
+    }
+
+    private void PlayerLost()
+    {
+        if (roundFinished)
+        {
+            return;
+        }
+
+        roundFinished = true;
+        roundActive = false;
+
+        controlsUI.SetActive(false);
+
+        StartCoroutine(LoseSequence());
+    }
+
+    private IEnumerator WinSequence()
+    {
+        timerText.gameObject.SetActive(false);
+
+        playerController.canMove = false;
+
+        playerRb.linearVelocity = Vector3.zero;
+        playerRb.angularVelocity = Vector3.zero;
+
+        winTimeline.Play();
+
+        yield return new WaitUntil(() => winTimeline.state != PlayState.Playing);
+
+        SceneManager.LoadScene("Lobby");
+    }
+
+    private IEnumerator LoseSequence()
+    {
+        timerText.gameObject.SetActive(false);
+
+        playerController.canMove = false;
+
+        playerRb.linearVelocity = Vector3.zero;
+        playerRb.angularVelocity = Vector3.zero;
+
+        loseTimeline.Play();
+
+        yield return new WaitUntil(() => loseTimeline.state != PlayState.Playing);
+
+        roundFinished = false;
+        roundActive = false;
+
+        StartCoroutine(StartRound());
+    }
 }
+
