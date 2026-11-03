@@ -23,6 +23,9 @@ public class PlayerMinigameController : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 
     void OnMove(InputValue movementValue)
