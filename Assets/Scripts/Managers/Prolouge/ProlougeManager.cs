@@ -98,6 +98,7 @@ public class PrologueManager : MonoBehaviour
         yield return new WaitForSeconds(2f);
         dialogueBox.SetActive(true);
 
+        yield return StartCoroutine(Say("You", "..."));
         yield return StartCoroutine(Say("You", "So its my turn"));
 
         yield return StartCoroutine(Say("Recruiter", "Youll be blue"));

@@ -10629,9 +10629,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Timer
+  m_text: 'Time: 7'
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 87de6fc0e0aafcb46ae18ef84cdb4f99, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 541df762d2e8c3e4ca95f8e8ad91dba7, type: 2}
   m_sharedMaterial: {fileID: 8656682042250916255, guid: 87de6fc0e0aafcb46ae18ef84cdb4f99, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -10697,7 +10697,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 0
+  m_hasFontAssetChanged: 1
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!222 &2103248583

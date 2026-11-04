@@ -11,6 +11,7 @@ public class PlayerController : MonoBehaviour
     public float maxSpeed = 0;
 
     public Transform cameraTransform;
+    public Transform spawnPoint;
 
     private Rigidbody rb;
 
@@ -24,6 +25,19 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+
+        if (spawnPoint != null)
+        {
+            rb.position = spawnPoint.position;
+            rb.rotation = spawnPoint.rotation;
+
+            rb.linearVelocity = Vector3.zero;
+            rb.angularVelocity = Vector3.zero;
+        }
+        else
+        {
+            Debug.LogWarning("No spawnPoint");
+        }
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
