@@ -30,9 +30,13 @@ public class PrologueManager : MonoBehaviour
 
     public Camera dialogueCamera;
     public Camera gameplayCamera;
+    public GameObject cutsceneCamera;
+
+    public GameObject looseDialouge;
 
     private bool roundActive = false;
     private bool roundFinished = false;
+    public bool firstTry = true;
 
     private float remainingTime;
     public float timeLimit = 15f;
@@ -169,6 +173,8 @@ public class PrologueManager : MonoBehaviour
         playerRb.linearVelocity = Vector3.zero;
         playerRb.angularVelocity = Vector3.zero;
 
+        cutsceneCamera.SetActive(false);
+        looseDialouge.SetActive(false);
         controlsUI.SetActive(true);
         playerController.canMove = true;
 
@@ -213,7 +219,14 @@ public class PrologueManager : MonoBehaviour
 
         controlsUI.SetActive(false);
 
-        StartCoroutine(WinSequence());
+        if (firstTry)
+        {
+            StartCoroutine(FirstTryWinSequence());
+        }
+        else
+        {
+            StartCoroutine(WinSequence());
+        }
     }
 
     private void PlayerLost()
@@ -229,6 +242,22 @@ public class PrologueManager : MonoBehaviour
         controlsUI.SetActive(false);
 
         StartCoroutine(LoseSequence());
+    }
+
+    private IEnumerator FirstTryWinSequence()
+    {
+        timerText.gameObject.SetActive(false);
+
+        playerController.canMove = false;
+
+        playerRb.linearVelocity = Vector3.zero;
+        playerRb.angularVelocity = Vector3.zero;
+
+        winTimeline.Play();
+
+        yield return new WaitUntil(() => winTimeline.state != PlayState.Playing);
+
+        SceneManager.LoadScene("Lobby");
     }
 
     private IEnumerator WinSequence()
@@ -262,6 +291,7 @@ public class PrologueManager : MonoBehaviour
 
         roundFinished = false;
         roundActive = false;
+        firstTry = false;
 
         StartCoroutine(StartRound());
     }
