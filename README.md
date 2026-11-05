@@ -1,1 +1,1 @@
-Download a build here: https://doeugh.itch.io/sphere-games
+Download the latest update here: https://doeugh.itch.io/sphere-games
