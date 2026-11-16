@@ -11,7 +11,7 @@ public class LevelTransporter : MonoBehaviour
         "Dalgona",
         "TugOfWar",
         "JumpRope",
-        "Mingle",
+        "Marbles",
         "SquidGame"
     };
 

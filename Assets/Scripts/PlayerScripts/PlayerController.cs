@@ -122,6 +122,11 @@ public class PlayerController : MonoBehaviour
 
     void OnPause(InputValue value)
     {
+        if (!canMove)
+        {
+            return;
+        }
+
         if (value.isPressed)
         {
             PauseMenuScript.TogglePause();
