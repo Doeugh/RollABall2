@@ -52,6 +52,11 @@ public class PlayerController : MonoBehaviour
 
     void OnFreeze(InputValue freezeValue)
     {
+        if (!canMove)
+        {
+            return;
+        }
+
         if (freezeValue.isPressed)
         {
             rb.linearVelocity = Vector3.zero;

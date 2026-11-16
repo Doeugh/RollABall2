@@ -37,7 +37,9 @@ public class RopeRotator : MonoBehaviour
         }
 
         if (!isSwingingDown)
+        {
             hasPlayedSound = false;
+        }
 
         lastZ = currentZ;
     }
@@ -48,7 +50,9 @@ public class RopeRotator : MonoBehaviour
         yield return new WaitForSeconds(soundDelay);
 
         if (swingSound != null)
+        {
             swingSound.Play();
+        }
 
         isDelaying = false;
     }
