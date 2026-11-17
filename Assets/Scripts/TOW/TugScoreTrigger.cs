@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class TugScoreTrigger : MonoBehaviour
 {
-    public int TugScore = 0;
+    public TugGameManager tugGameManager;
 
     public TugCheckpoint[] checkpoints;
 
@@ -25,9 +25,7 @@ public class TugScoreTrigger : MonoBehaviour
             }
         }
 
-        TugScore++;
-
-        Debug.Log("Tug Score: " + TugScore);
+        tugGameManager.AddTugScore(1);
 
         foreach (TugCheckpoint checkpoint in checkpoints)
         {
