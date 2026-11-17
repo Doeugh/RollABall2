@@ -13,14 +13,16 @@ public class TugGameManager : MonoBehaviour
     public Transform[] waypoints;
     public float ropeMoveSpeed = 2f;
 
-    public int TugScore = 0;
-    public int winScore = 5;
-    public int loseScore = -5;
+    public float TugScore = 0f;
+    public float winScore = 5f;
+    public float loseScore = -5f;
+
+    public float scoreDrainRate = 0.1f;
+
+    public float checkpointReward = 1f;
 
     private bool gameStarted = false;
     private bool gameEnded = false;
-
-    private Coroutine ropeMovement;
 
     private void Start()
     {
@@ -29,7 +31,7 @@ public class TugGameManager : MonoBehaviour
         tugObject.SetActive(false);
         tugCamera.gameObject.SetActive(false);
 
-        TugScore = 0;
+        TugScore = 0f;
 
         UpdateRopePosition();
     }
@@ -56,38 +58,27 @@ public class TugGameManager : MonoBehaviour
         tugObject.SetActive(true);
         tugCamera.gameObject.SetActive(true);
 
-        TugScore = 0;
-
-        UpdateRopePosition();
+        TugScore = 0f;
 
         Debug.Log("Tug Game Started!");
 
-        StartCoroutine(DecreaseTugScore());
+        StartCoroutine(TugScoreDrain());
     }
 
-    private IEnumerator DecreaseTugScore()
+    private IEnumerator TugScoreDrain()
     {
         while (!gameEnded)
         {
-            float waitTime = Random.Range(4.50f, 7.50f);
-
-            yield return new WaitForSeconds(waitTime);
-
-            if (gameEnded)
-            {
-                yield break;
-            }
-
-            TugScore--;
-
-            Debug.Log("Tug Score: " + TugScore);
+            TugScore -= scoreDrainRate * Time.deltaTime;
 
             UpdateRopePosition();
             CheckGameOver();
+
+            yield return null;
         }
     }
 
-    public void AddTugScore(int amount = 1)
+    public void AddTugScore(float amount = 1f)
     {
         if (!gameStarted || gameEnded)
         {
@@ -96,51 +87,49 @@ public class TugGameManager : MonoBehaviour
 
         TugScore += amount;
 
-        Debug.Log("Tug Score: " + TugScore);
+        Debug.Log("Tug Score: " + TugScore.ToString("F2"));
 
-        UpdateRopePosition();
         CheckGameOver();
     }
 
     private void UpdateRopePosition()
     {
-        if (rope == null || waypoints == null || waypoints.Length == 0)
+        if (rope == null || waypoints == null || waypoints.Length < 2)
         {
             return;
         }
 
-        int waypointIndex = TugScore - loseScore;
+        float waypointPosition = TugScore - loseScore;
 
-        waypointIndex = Mathf.Clamp(waypointIndex, 0, waypoints.Length - 1);
+        waypointPosition = Mathf.Clamp(waypointPosition, 0f, waypoints.Length - 1);
 
-        if (waypoints[waypointIndex] == null)
+        int lowerIndex = Mathf.FloorToInt(waypointPosition);
+        int upperIndex = Mathf.Min(lowerIndex + 1, waypoints.Length - 1);
+
+        float interpolation = waypointPosition - lowerIndex;
+
+        if (waypoints[lowerIndex] == null || waypoints[upperIndex] == null)
         {
             return;
         }
 
-        if (ropeMovement != null)
-        {
-            StopCoroutine(ropeMovement);
-        }
+        Vector3 targetPosition = Vector3.Lerp(waypoints[lowerIndex].position, waypoints[upperIndex].position, interpolation);
 
-        ropeMovement = StartCoroutine(MoveRope(waypoints[waypointIndex]));
+        Quaternion targetRotation = Quaternion.Slerp(waypoints[lowerIndex].rotation, waypoints[upperIndex].rotation, interpolation);
+
+        rope.position = Vector3.MoveTowards(rope.position, targetPosition, ropeMoveSpeed * Time.deltaTime);
+
+        rope.rotation = Quaternion.RotateTowards(rope.rotation, targetRotation, ropeMoveSpeed * 90f * Time.deltaTime);
     }
 
-    private IEnumerator MoveRope(Transform target)
+    private void Update()
     {
-        while (Vector3.Distance(rope.position, target.position) > 0.01f)
+        if (!gameStarted || gameEnded)
         {
-            rope.position = Vector3.MoveTowards(rope.position, target.position, ropeMoveSpeed * Time.deltaTime);
-
-            rope.rotation = Quaternion.RotateTowards(rope.rotation, target.rotation, ropeMoveSpeed * 90f * Time.deltaTime);
-
-            yield return null;
+            return;
         }
 
-        rope.position = target.position;
-        rope.rotation = target.rotation;
-
-        ropeMovement = null;
+        UpdateRopePosition();
     }
 
     private void CheckGameOver()

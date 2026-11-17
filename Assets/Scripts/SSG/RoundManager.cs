@@ -25,6 +25,11 @@ public class RoundManager : MonoBehaviour
     public TMP_Text timerText;
     public TMP_Text roundText;
 
+    public float accelerationRate = 0.15f;
+    public float maxTimerSpeed = 5f;
+
+    private float currentTimerSpeed = 1f;
+
     public bool roundStarted = false;
     public bool RoundComplete = false;
     public bool gameEnded = false;
@@ -42,17 +47,11 @@ public class RoundManager : MonoBehaviour
     {
         yield return null;
 
-        Debug.Log(
-            "RoundManager: " + gameObject.name +
-            " | Spawn Sets: " + (roundSpawns == null ? "NULL" : roundSpawns.Length.ToString()) +
-            " | Total Rounds: " + totalRounds
-        );
+        Debug.Log("RoundManager: " + gameObject.name + " | Spawn Sets: " + (roundSpawns == null ? "NULL" : roundSpawns.Length.ToString()) + " | Total Rounds: " + totalRounds);
 
         if (roundSpawns == null || roundSpawns.Length < totalRounds)
         {
-            Debug.LogError(
-                "Not enough round spawn sets assigned on: " + gameObject.name
-            );
+            Debug.LogError("Not enough round spawn sets assigned on: " + gameObject.name);
 
             yield break;
         }
@@ -73,6 +72,8 @@ public class RoundManager : MonoBehaviour
         roundStarted = true;
         RoundComplete = false;
 
+        currentTimerSpeed = 1f;
+
         Debug.Log("Round " + (currentRound + 1) + " started!");
 
         timerCoroutine = StartCoroutine(RoundTimer());
@@ -81,10 +82,14 @@ public class RoundManager : MonoBehaviour
     public void RegisterFall(GameObject fallenObject)
     {
         if (!roundStarted || gameEnded)
+        {
             return;
+        }
 
         if (RoundComplete)
+        {
             return;
+        }
 
         RoundComplete = true;
 
@@ -101,25 +106,41 @@ public class RoundManager : MonoBehaviour
         PlayerController pc = fallenObject.GetComponent<PlayerController>();
 
         if (pc != null)
+        {
             pc.canMove = false;
+        }
 
         SSGEnemyAI ai = fallenObject.GetComponent<SSGEnemyAI>();
 
         if (ai != null)
+        {
             ai.canMove = false;
+        }
     }
 
     IEnumerator RoundTimer()
     {
         float timeRemaining = roundDuration;
 
+        currentTimerSpeed = 1f;
+
         while (timeRemaining > 0)
         {
             UpdateTimerUI(timeRemaining);
 
-            yield return new WaitForSeconds(1f);
+            if (RoundComplete)
+            {
+                currentTimerSpeed += accelerationRate * Time.deltaTime;
+                currentTimerSpeed = Mathf.Min(currentTimerSpeed, maxTimerSpeed);
+            }
+            else
+            {
+                currentTimerSpeed = 1f;
+            }
 
-            timeRemaining--;
+            timeRemaining -= currentTimerSpeed * Time.deltaTime;
+
+            yield return null;
         }
 
         UpdateTimerUI(0);

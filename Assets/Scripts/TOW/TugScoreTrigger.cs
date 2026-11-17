@@ -25,7 +25,9 @@ public class TugScoreTrigger : MonoBehaviour
             }
         }
 
-        tugGameManager.AddTugScore(1);
+        tugGameManager.AddTugScore(
+            tugGameManager.checkpointReward
+        );
 
         foreach (TugCheckpoint checkpoint in checkpoints)
         {
