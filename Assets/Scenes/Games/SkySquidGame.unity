@@ -2651,6 +2651,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 0}
+  targetSwitchInterval: 6
   canMove: 1
   retreatDistance: 5
   retreatCheckDistance: 3
@@ -2661,6 +2662,7 @@ MonoBehaviour:
     m_Bits: 256
   brakingForce: 15
   minimumSpeedToTurn: 1
+  isTargetable: 1
 --- !u!114 &1026794546
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3343,6 +3345,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 0}
+  targetSwitchInterval: 6
   canMove: 1
   retreatDistance: 5
   retreatCheckDistance: 3
@@ -3353,6 +3356,7 @@ MonoBehaviour:
     m_Bits: 256
   brakingForce: 15
   minimumSpeedToTurn: 1
+  isTargetable: 1
 --- !u!114 &1091875068
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4197,6 +4201,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 0}
+  targetSwitchInterval: 6
   canMove: 1
   retreatDistance: 5
   retreatCheckDistance: 3
@@ -4207,6 +4212,7 @@ MonoBehaviour:
     m_Bits: 256
   brakingForce: 15
   minimumSpeedToTurn: 1
+  isTargetable: 1
 --- !u!114 &1298988960
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4507,6 +4513,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 0}
+  targetSwitchInterval: 6
   canMove: 1
   retreatDistance: 5
   retreatCheckDistance: 3
@@ -4517,6 +4524,7 @@ MonoBehaviour:
     m_Bits: 256
   brakingForce: 15
   minimumSpeedToTurn: 1
+  isTargetable: 1
 --- !u!114 &1300583489
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9492,6 +9500,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 0}
+  targetSwitchInterval: 6
   canMove: 1
   retreatDistance: 5
   retreatCheckDistance: 3
@@ -9502,6 +9511,7 @@ MonoBehaviour:
     m_Bits: 256
   brakingForce: 15
   minimumSpeedToTurn: 1
+  isTargetable: 1
 --- !u!114 &1717316536
 MonoBehaviour:
   m_ObjectHideFlags: 0

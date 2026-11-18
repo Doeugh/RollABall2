@@ -20,6 +20,8 @@ public class SSGEnemyAI : MonoBehaviour
     public float brakingForce = 8f;
     public float minimumSpeedToTurn = 1f;
 
+    public bool isTargetable = true;
+
     private SSQEnemyMovement movement;
     private Rigidbody rb;
 
@@ -84,6 +86,7 @@ public class SSGEnemyAI : MonoBehaviour
         }
     }
 
+
     void SelectRandomTarget()
     {
         List<Transform> possibleTargets = new List<Transform>();
@@ -102,7 +105,9 @@ public class SSGEnemyAI : MonoBehaviour
 
         foreach (SSGEnemyAI enemy in enemies)
         {
-            if (enemy != null && enemy.transform != transform)
+            if (enemy != null &&
+                enemy.transform != transform &&
+                enemy.isTargetable)
             {
                 if (!possibleTargets.Contains(enemy.transform))
                 {
@@ -111,8 +116,17 @@ public class SSGEnemyAI : MonoBehaviour
             }
         }
 
-        List<Transform> alternativeTargets = new List<Transform>(possibleTargets);
+        possibleTargets.RemoveAll(t =>
+        {
+            if (t == null)
+                return true;
 
+            SSGEnemyAI enemyAI = t.GetComponent<SSGEnemyAI>();
+
+            return enemyAI != null && !enemyAI.isTargetable;
+        });
+
+        List<Transform> alternativeTargets = new List<Transform>(possibleTargets);
         alternativeTargets.Remove(target);
 
         if (alternativeTargets.Count > 0)
@@ -129,7 +143,13 @@ public class SSGEnemyAI : MonoBehaviour
 
             ChooseRetreatDirection();
         }
+        else
+        {
+            target = null;
+            movement.StopMovement();
+        }
     }
+
 
     void Retreat()
     {

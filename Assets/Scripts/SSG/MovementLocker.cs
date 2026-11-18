@@ -23,5 +23,12 @@ public class MovementLocker : MonoBehaviour
                 enemy.canMove = false;
             }
         }
+
+        SSGEnemyAI targetAI = other.GetComponent<SSGEnemyAI>();
+
+        if (targetAI != null)
+        {
+            targetAI.isTargetable = false;
+        }
     }
 }

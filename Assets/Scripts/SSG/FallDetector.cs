@@ -10,7 +10,6 @@ public class FallDetector : MonoBehaviour
         if (other.CompareTag("Enemy"))
         {
             roundManager.RegisterFall(other.gameObject);
-
             other.gameObject.SetActive(false);
         }
 
