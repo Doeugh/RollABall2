@@ -23,6 +23,14 @@ public class EnemyMarbles : MonoBehaviour
         currentMarbles += amount;
     }
 
+    public void RemoveMarbles(int amount)
+    {
+        if (amount <= 0)
+            return;
+
+        currentMarbles = Mathf.Max(0, currentMarbles - amount);
+    }
+
     public int GetHandAmount()
     {
         if (currentMarbles <= 0)

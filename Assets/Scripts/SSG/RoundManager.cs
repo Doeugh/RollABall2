@@ -23,10 +23,13 @@ public class RoundManager : MonoBehaviour
 
     [Header("UI")]
     public TMP_Text timerText;
-    public TMP_Text roundText;
 
     public float accelerationRate = 0.15f;
     public float maxTimerSpeed = 5f;
+
+    public float eliminationAcceleration = 0.5f;
+
+    private int enemiesEliminatedThisRound = 0;
 
     private float currentTimerSpeed = 1f;
 
@@ -57,8 +60,6 @@ public class RoundManager : MonoBehaviour
         }
 
         TeleportEveryoneToRound();
-
-        UpdateRoundUI();
     }
 
 
@@ -81,6 +82,7 @@ public class RoundManager : MonoBehaviour
         RoundComplete = false;
 
         currentTimerSpeed = 1f;
+        enemiesEliminatedThisRound = 0;
 
         Debug.Log("Round " + (currentRound + 1) + " started!");
 
@@ -99,9 +101,20 @@ public class RoundManager : MonoBehaviour
             return;
         }
 
+        Debug.Log(fallenObject.name + " has fallen!");
+
+        SSGEnemyAI ai = fallenObject.GetComponent<SSGEnemyAI>();
+
+        if (ai != null)
+        {
+            enemiesEliminatedThisRound++;
+
+            Debug.Log("Enemies eliminated this round: " + enemiesEliminatedThisRound);
+        }
+
         RoundComplete = true;
 
-        Debug.Log(fallenObject.name + " has fallen! Round objective completed.");
+        Debug.Log("Round objective completed.");
 
         Rigidbody rb = fallenObject.GetComponent<Rigidbody>();
 
@@ -117,8 +130,6 @@ public class RoundManager : MonoBehaviour
         {
             pc.canMove = false;
         }
-
-        SSGEnemyAI ai = fallenObject.GetComponent<SSGEnemyAI>();
 
         if (ai != null)
         {
@@ -139,12 +150,13 @@ public class RoundManager : MonoBehaviour
             if (RoundComplete)
             {
                 currentTimerSpeed += accelerationRate * Time.deltaTime;
-                currentTimerSpeed = Mathf.Min(currentTimerSpeed, maxTimerSpeed);
             }
             else
             {
-                currentTimerSpeed = 1f;
+                currentTimerSpeed = 1f + (enemiesEliminatedThisRound * eliminationAcceleration);
             }
+
+            currentTimerSpeed = Mathf.Min(currentTimerSpeed, maxTimerSpeed);
 
             timeRemaining -= currentTimerSpeed * Time.deltaTime;
 
@@ -184,8 +196,6 @@ public class RoundManager : MonoBehaviour
         roundStarted = false;
 
         UpdateTimerUI(roundDuration);
-
-        UpdateRoundUI();
 
         Debug.Log("Ready for round " + (currentRound + 1));
     }
@@ -273,14 +283,8 @@ public class RoundManager : MonoBehaviour
         int seconds = Mathf.FloorToInt(time % 60);
 
         timerText.text = minutes.ToString("00") + ":" + seconds.ToString("00");
-    }
 
-    void UpdateRoundUI()
-    {
-        if (roundText != null)
-        {
-            roundText.text = "Round " + (currentRound + 1);
-        }
+        timerText.color = RoundComplete ? Color.green : Color.red;
     }
 
     bool AreAnyEnemiesAlive()
@@ -299,5 +303,17 @@ public class RoundManager : MonoBehaviour
         }
 
         return false;
+    }
+
+    public void RegisterEnemyElimination()
+    {
+        if (!roundStarted || gameEnded || RoundComplete)
+        {
+            return;
+        }
+
+        enemiesEliminatedThisRound++;
+
+        Debug.Log("Enemies eliminated this round: " + enemiesEliminatedThisRound);
     }
 }

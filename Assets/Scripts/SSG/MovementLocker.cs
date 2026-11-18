@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class MovementLocker : MonoBehaviour
 {
+    public RoundManager roundManager;
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
@@ -21,6 +23,7 @@ public class MovementLocker : MonoBehaviour
             if (enemy != null)
             {
                 enemy.canMove = false;
+                roundManager.RegisterFall(other.gameObject);
             }
         }
 

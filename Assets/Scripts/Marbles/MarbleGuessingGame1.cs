@@ -1,4 +1,3 @@
-
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -67,6 +66,8 @@ public class MarbleGuessingGame1 : MonoBehaviour
         if (guessedOdd == enemyHasOdd)
         {
             MarbleManager.Instance.AddMarbles(currentBet);
+            currentEnemy.RemoveMarbles(currentBet);
+
             resultText.text = "CORRECT! You won " + currentBet + " marbles!";
         }
         else
