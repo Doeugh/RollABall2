@@ -1,16 +1,11 @@
 using UnityEngine;
-using System.Collections;
 
 public class RopeRotator : MonoBehaviour
 {
     public float baseSpeed = -100f;
     public float speedVariation = 0.5f;
-    public AudioSource swingSound;
-    public float soundDelay = 0.2f;
 
     private float lastZ;
-    private bool hasPlayedSound = false;
-    private bool isDelaying = false;
 
     void Start()
     {
@@ -30,30 +25,6 @@ public class RopeRotator : MonoBehaviour
 
         bool isSwingingDown = currentZ < lastZ;
 
-        if (isSwingingDown && !hasPlayedSound && !isDelaying)
-        {
-            StartCoroutine(PlayDelayedSound());
-            hasPlayedSound = true;
-        }
-
-        if (!isSwingingDown)
-        {
-            hasPlayedSound = false;
-        }
-
         lastZ = currentZ;
-    }
-
-    private IEnumerator PlayDelayedSound()
-    {
-        isDelaying = true;
-        yield return new WaitForSeconds(soundDelay);
-
-        if (swingSound != null)
-        {
-            swingSound.Play();
-        }
-
-        isDelaying = false;
     }
 }
