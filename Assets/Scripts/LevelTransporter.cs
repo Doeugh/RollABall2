@@ -12,7 +12,7 @@ public class LevelTransporter : MonoBehaviour
         "TugOfWar",
         "JumpRope",
         "Marbles",
-        "SquidGame"
+        "SkySquidGame"
     };
 
     private void OnTriggerEnter(Collider other)

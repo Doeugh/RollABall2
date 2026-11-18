@@ -105,9 +105,7 @@ public class SSGEnemyAI : MonoBehaviour
 
         foreach (SSGEnemyAI enemy in enemies)
         {
-            if (enemy != null &&
-                enemy.transform != transform &&
-                enemy.isTargetable)
+            if (enemy != null && enemy.transform != transform && enemy.isTargetable)
             {
                 if (!possibleTargets.Contains(enemy.transform))
                 {
@@ -201,6 +199,28 @@ public class SSGEnemyAI : MonoBehaviour
     {
         Vector3 direction = target.position - transform.position;
         direction.y = 0f;
+
+        if (direction.sqrMagnitude < 0.01f)
+        {
+            movement.StopMovement();
+            return;
+        }
+
+        direction.Normalize();
+
+        Vector3 checkPosition = transform.position + direction * edgeCheckDistance;
+
+        if (!HasGround(checkPosition))
+        {
+            movement.StopMovement();
+
+            currentState = AIState.Retreating;
+            chargeTimer = 0f;
+
+            ChooseRetreatDirection();
+
+            return;
+        }
 
         movement.Move(direction);
 

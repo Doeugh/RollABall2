@@ -69,6 +69,14 @@ public class RoundManager : MonoBehaviour
             return;
         }
 
+        if (!AreAnyEnemiesAlive())
+        {
+            Debug.Log("All enemies defeated! Player wins!");
+
+            EndGame(true);
+            return;
+        }
+
         roundStarted = true;
         RoundComplete = false;
 
@@ -246,13 +254,12 @@ public class RoundManager : MonoBehaviour
 
         if (victory)
         {
-            //win screen
+            Debug.LogWarning("You won");
         }
         else
         {
             SceneManager.LoadScene("YouDiedScreen");
         }
-
     }
 
     void UpdateTimerUI(float time)
@@ -274,5 +281,23 @@ public class RoundManager : MonoBehaviour
         {
             roundText.text = "Round " + (currentRound + 1);
         }
+    }
+
+    bool AreAnyEnemiesAlive()
+    {
+        foreach (SSGEnemyAI enemy in enemies)
+        {
+            if (enemy == null)
+            {
+                continue;
+            }
+
+            if (enemy.gameObject.activeInHierarchy)
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

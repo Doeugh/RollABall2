@@ -32,6 +32,15 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Games/TugOfWar.unity
     guid: 012cdc78a167dc74e8980c64a9c6c374
+  - enabled: 1
+    path: Assets/Scenes/Games/Marbles.unity
+    guid: be09d49b51df2b247923960054c4fb99
+  - enabled: 1
+    path: Assets/Scenes/Games/SkySquidGame.unity
+    guid: 9b76d33c74b7adc4ba33b7ee9c75b2a9
+  - enabled: 1
+    path: Assets/Scenes/Games/JumpRope.unity
+    guid: 943c35fec0c9b85459bbc5164a26883d
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0

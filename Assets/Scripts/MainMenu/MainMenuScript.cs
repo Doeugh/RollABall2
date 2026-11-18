@@ -95,6 +95,30 @@ public class MainMenuScript : MonoBehaviour
         SceneManager.LoadScene("Lobby");
     }
 
+    public void PlayTOW()
+    {
+        LevelTransporter.SetStartingLevel(2);
+        SceneManager.LoadScene("Lobby");
+    }
+
+    public void PlayJumpRope()
+    {
+        LevelTransporter.SetStartingLevel(3);
+        SceneManager.LoadScene("Lobby");
+    }
+
+    public void PlayMarbles()
+    {
+        LevelTransporter.SetStartingLevel(4);
+        SceneManager.LoadScene("Lobby");
+    }
+
+    public void PlaySSQ()
+    {
+        LevelTransporter.SetStartingLevel(5);
+        SceneManager.LoadScene("Lobby");
+    }
+
     public void SetVolume(float volume)
     {
         audioMixer.SetFloat("Volume", volume);
