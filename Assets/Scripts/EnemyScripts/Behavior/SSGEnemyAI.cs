@@ -1,3 +1,4 @@
+
 using UnityEngine;
 using System.Collections.Generic;
 
@@ -15,6 +16,7 @@ public class SSGEnemyAI : MonoBehaviour
     public float chargeDuration = 2f;
 
     public float edgeCheckDistance = 1.5f;
+    public float edgeSafetyBuffer = 0.5f;
     public LayerMask groundLayer;
 
     public float brakingForce = 8f;
@@ -74,6 +76,11 @@ public class SSGEnemyAI : MonoBehaviour
             return;
         }
 
+        if (HandleEdgeSafety())
+        {
+            return;
+        }
+
         switch (currentState)
         {
             case AIState.Retreating:
@@ -86,12 +93,121 @@ public class SSGEnemyAI : MonoBehaviour
         }
     }
 
+    float GetPredictiveCheckDistance()
+    {
+        Vector3 velocity = rb.linearVelocity;
+
+        velocity.y = 0f;
+
+        float speed = velocity.magnitude;
+
+        float stoppingDistance = 0f;
+
+        if (brakingForce > 0f)
+        {
+            stoppingDistance = (speed * speed) / (2f * brakingForce);
+        }
+
+        return edgeCheckDistance + stoppingDistance + edgeSafetyBuffer;
+    }
+
+    bool IsDirectionSafe(Vector3 direction)
+    {
+        if (direction.sqrMagnitude < 0.01f)
+            return true;
+
+        direction.Normalize();
+
+        float checkDistance = GetPredictiveCheckDistance();
+
+        Vector3 checkPosition =
+            transform.position + direction * checkDistance;
+
+        return HasGround(checkPosition);
+    }
+
+    void BrakeHorizontalMovement()
+    {
+        Vector3 horizontalVelocity = new Vector3(
+            rb.linearVelocity.x,
+            0f,
+            rb.linearVelocity.z
+        );
+
+        horizontalVelocity = Vector3.MoveTowards(
+            horizontalVelocity,
+            Vector3.zero,
+            brakingForce * Time.fixedDeltaTime
+        );
+
+        rb.linearVelocity = new Vector3(
+            horizontalVelocity.x,
+            rb.linearVelocity.y,
+            horizontalVelocity.z
+        );
+    }
+
+    Vector3 GetIntendedDirection()
+    {
+        if (currentState == AIState.Charging && target != null)
+        {
+            Vector3 direction = target.position - transform.position;
+            direction.y = 0f;
+
+            return direction.normalized;
+        }
+
+        if (currentState == AIState.Retreating)
+        {
+            return retreatDirection.normalized;
+        }
+
+        return Vector3.zero;
+    }
+
+    bool HandleEdgeSafety()
+    {
+        Vector3 intendedDirection = GetIntendedDirection();
+
+        Vector3 velocityDirection = new Vector3(
+            rb.linearVelocity.x,
+            0f,
+            rb.linearVelocity.z
+        );
+
+        if (velocityDirection.sqrMagnitude > 0.01f)
+        {
+            velocityDirection.Normalize();
+        }
+
+        bool intendedDirectionSafe =
+            IsDirectionSafe(intendedDirection);
+
+        bool velocityDirectionSafe =
+            velocityDirection.sqrMagnitude < 0.01f ||
+            IsDirectionSafe(velocityDirection);
+
+        if (intendedDirectionSafe && velocityDirectionSafe)
+        {
+            return false;
+        }
+
+        currentState = AIState.Retreating;
+        chargeTimer = 0f;
+
+        BrakeHorizontalMovement();
+
+        ChooseRetreatDirection();
+
+        return true;
+    }
 
     void SelectRandomTarget()
     {
         List<Transform> possibleTargets = new List<Transform>();
 
-        PlayerController[] players = FindObjectsByType<PlayerController>(FindObjectsSortMode.None);
+        PlayerController[] players =
+            FindObjectsByType<PlayerController>(FindObjectsSortMode.None);
 
         foreach (PlayerController player in players)
         {
@@ -101,11 +217,14 @@ public class SSGEnemyAI : MonoBehaviour
             }
         }
 
-        SSGEnemyAI[] enemies = FindObjectsByType<SSGEnemyAI>(FindObjectsSortMode.None);
+        SSGEnemyAI[] enemies =
+            FindObjectsByType<SSGEnemyAI>(FindObjectsSortMode.None);
 
         foreach (SSGEnemyAI enemy in enemies)
         {
-            if (enemy != null && enemy.transform != transform && enemy.isTargetable)
+            if (enemy != null &&
+                enemy.transform != transform &&
+                enemy.isTargetable)
             {
                 if (!possibleTargets.Contains(enemy.transform))
                 {
@@ -124,7 +243,9 @@ public class SSGEnemyAI : MonoBehaviour
             return enemyAI != null && !enemyAI.isTargetable;
         });
 
-        List<Transform> alternativeTargets = new List<Transform>(possibleTargets);
+        List<Transform> alternativeTargets =
+            new List<Transform>(possibleTargets);
+
         alternativeTargets.Remove(target);
 
         if (alternativeTargets.Count > 0)
@@ -134,7 +255,9 @@ public class SSGEnemyAI : MonoBehaviour
 
         if (possibleTargets.Count > 0)
         {
-            target = possibleTargets[Random.Range(0, possibleTargets.Count)];
+            target = possibleTargets[
+                Random.Range(0, possibleTargets.Count)
+            ];
 
             currentState = AIState.Retreating;
             chargeTimer = 0f;
@@ -148,7 +271,6 @@ public class SSGEnemyAI : MonoBehaviour
         }
     }
 
-
     void Retreat()
     {
         Vector3 toTarget = target.position - transform.position;
@@ -161,35 +283,15 @@ public class SSGEnemyAI : MonoBehaviour
             return;
         }
 
-        Vector3 checkPosition =
-            transform.position + retreatDirection * edgeCheckDistance;
-
-        if (!HasGround(checkPosition))
+        if (retreatDirection.sqrMagnitude < 0.01f)
         {
-            Vector3 horizontalVelocity = new Vector3(
-                rb.linearVelocity.x,
-                0f,
-                rb.linearVelocity.z
-            );
+            ChooseRetreatDirection();
 
-            horizontalVelocity = Vector3.MoveTowards(
-                horizontalVelocity,
-                Vector3.zero,
-                brakingForce * Time.fixedDeltaTime
-            );
-
-            rb.linearVelocity = new Vector3(
-                horizontalVelocity.x,
-                rb.linearVelocity.y,
-                horizontalVelocity.z
-            );
-
-            if (horizontalVelocity.magnitude <= minimumSpeedToTurn)
+            if (retreatDirection.sqrMagnitude < 0.01f)
             {
-                ChooseRetreatDirection();
+                movement.StopMovement();
+                return;
             }
-
-            return;
         }
 
         movement.Move(retreatDirection);
@@ -208,20 +310,6 @@ public class SSGEnemyAI : MonoBehaviour
 
         direction.Normalize();
 
-        Vector3 checkPosition = transform.position + direction * edgeCheckDistance;
-
-        if (!HasGround(checkPosition))
-        {
-            movement.StopMovement();
-
-            currentState = AIState.Retreating;
-            chargeTimer = 0f;
-
-            ChooseRetreatDirection();
-
-            return;
-        }
-
         movement.Move(direction);
 
         chargeTimer -= Time.fixedDeltaTime;
@@ -235,7 +323,11 @@ public class SSGEnemyAI : MonoBehaviour
 
     void ChooseRetreatDirection()
     {
-        Vector3 awayFromTarget = transform.position - (target != null ? target.position : transform.position + transform.forward);
+        Vector3 awayFromTarget =
+            transform.position -
+            (target != null
+                ? target.position
+                : transform.position + transform.forward);
 
         awayFromTarget.y = 0f;
 
@@ -260,9 +352,7 @@ public class SSGEnemyAI : MonoBehaviour
 
         foreach (Vector3 direction in directions)
         {
-            Vector3 checkPosition = transform.position + direction * edgeCheckDistance;
-
-            if (HasGround(checkPosition))
+            if (IsDirectionSafe(direction))
             {
                 retreatDirection = direction.normalized;
                 return;
@@ -274,6 +364,11 @@ public class SSGEnemyAI : MonoBehaviour
 
     bool HasGround(Vector3 position)
     {
-        return Physics.Raycast(position + Vector3.up * 2f, Vector3.down, 5f, groundLayer);
+        return Physics.Raycast(
+            position + Vector3.up * 2f,
+            Vector3.down,
+            5f,
+            groundLayer
+        );
     }
 }

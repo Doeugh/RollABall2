@@ -254,7 +254,7 @@ public class RoundManager : MonoBehaviour
 
         if (victory)
         {
-            Debug.LogWarning("You won");
+            SceneManager.LoadScene("WinCutscene");
         }
         else
         {
