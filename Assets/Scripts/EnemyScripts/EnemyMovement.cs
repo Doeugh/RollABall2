@@ -3,10 +3,11 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class SSQEnemyMovement : MonoBehaviour
 {
-    [Header("Movement Settings")]
     public float speed = 15f;
     public float maxSpeed = 6f;
     public float rotationSpeed = 10f;
+
+    public bool EnemyCantMove = false;
 
     private Rigidbody rb;
 
@@ -17,6 +18,11 @@ public class SSQEnemyMovement : MonoBehaviour
 
     public void Move(Vector3 direction)
     {
+        if (EnemyCantMove)
+        {
+            return;
+        }
+
         direction.y = 0f;
 
         if (direction.sqrMagnitude < 0.01f)
@@ -49,4 +55,3 @@ public class SSQEnemyMovement : MonoBehaviour
         rb.angularVelocity = Vector3.zero;
     }
 }
-
