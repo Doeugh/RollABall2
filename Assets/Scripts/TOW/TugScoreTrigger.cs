@@ -6,6 +6,10 @@ public class TugScoreTrigger : MonoBehaviour
 
     public TugCheckpoint[] checkpoints;
 
+    public GameObject spinningArrow;
+
+    private bool hasScored = false;
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
@@ -20,14 +24,17 @@ public class TugScoreTrigger : MonoBehaviour
         {
             if (!checkpoint.isActivated)
             {
-                Debug.Log("Not all checkpoints have been activated");
                 return;
             }
         }
 
-        tugGameManager.AddTugScore(
-            tugGameManager.checkpointReward
-        );
+        tugGameManager.AddTugScore(tugGameManager.checkpointReward);
+
+        if (!hasScored)
+        {
+            spinningArrow.SetActive(false);
+            hasScored = true;
+        }
 
         foreach (TugCheckpoint checkpoint in checkpoints)
         {
