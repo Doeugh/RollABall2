@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using UnityEngine.Playables;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
@@ -12,7 +13,7 @@ public class DalgonaController : MonoBehaviour
     [SerializeField] private float checkInterval = 0.1f;
 
     [SerializeField] private int maxAttempts = 3;
-    private int attempts;
+    public int attempts { get; private set; }
 
     private int requiredLineCount = 0;
     [SerializeField] private TMP_Text progressText;
@@ -27,6 +28,8 @@ public class DalgonaController : MonoBehaviour
     private bool isComplete = false;
 
     private float checkTimer = 0f;
+
+    [SerializeField] private PlayableDirector deathTimeline;
 
     private void Start()
     {
@@ -216,7 +219,28 @@ public class DalgonaController : MonoBehaviour
 
     private void FailTracing()
     {
+        if (isComplete)
+        {
+            return;
+        }
+
         isComplete = true;
+
+        if (deathTimeline != null)
+        {
+            deathTimeline.stopped += OnDeathTimelineFinished;
+            deathTimeline.Play();
+        }
+        else
+        {
+            SceneManager.LoadScene("YouDiedScreen");
+        }
+    }
+
+    private void OnDeathTimelineFinished(PlayableDirector director)
+    {
+        director.stopped -= OnDeathTimelineFinished;
+
         SceneManager.LoadScene("YouDiedScreen");
     }
 }
