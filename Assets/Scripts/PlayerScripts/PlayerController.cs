@@ -20,6 +20,8 @@ public class PlayerController : MonoBehaviour
 
     private bool isGrounded;
 
+    private PlayerDustTrail dustTrail;
+
     public bool canMove = false;
 
     void Start()
@@ -38,6 +40,8 @@ public class PlayerController : MonoBehaviour
         {
             Debug.LogWarning("No spawnPoint");
         }
+
+        dustTrail = GetComponent<PlayerDustTrail>();
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
@@ -61,6 +65,11 @@ public class PlayerController : MonoBehaviour
         {
             rb.linearVelocity = Vector3.zero;
             rb.angularVelocity = Vector3.zero;
+        }
+
+        if (dustTrail != null)
+        {
+            dustTrail.TriggerFreezeEffect();
         }
     }
 

@@ -7042,6 +7042,10 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: a5264adaae0652a429dd1a0f0bb079bc, type: 2}
+    - target: {fileID: 2020226555823098274, guid: 84b93dd4993d11247b8dcd25749af5b7, type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
     - target: {fileID: 2558718085712426155, guid: 84b93dd4993d11247b8dcd25749af5b7, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -17765,6 +17769,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1735242068412932396, guid: 72afa3b27c80b0a499c6e8c85912ec1d, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: e805b8f16c20ea244b54182d65996a06, type: 2}
     - target: {fileID: 4838064104262479079, guid: 72afa3b27c80b0a499c6e8c85912ec1d, type: 3}
       propertyPath: m_Name
       value: Player
