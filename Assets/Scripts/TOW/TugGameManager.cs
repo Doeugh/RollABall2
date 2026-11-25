@@ -36,21 +36,28 @@ public class TugGameManager : MonoBehaviour
         UpdateRopePosition();
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void Update()
+    {
+        if (!gameStarted && !gameEnded && !TOWIntroManager.IsIntroPlaying)
+        {
+            StartTugGame();
+        }
+
+        if (!gameStarted || gameEnded)
+        {
+            return;
+        }
+
+        UpdateRopePosition();
+    }
+
+    private void StartTugGame()
     {
         if (gameStarted || gameEnded)
         {
             return;
         }
 
-        if (other.CompareTag("Player"))
-        {
-            StartTugGame();
-        }
-    }
-
-    private void StartTugGame()
-    {
         gameStarted = true;
 
         player.SetActive(false);
@@ -113,23 +120,29 @@ public class TugGameManager : MonoBehaviour
             return;
         }
 
-        Vector3 targetPosition = Vector3.Lerp(waypoints[lowerIndex].position, waypoints[upperIndex].position, interpolation);
+        Vector3 targetPosition = Vector3.Lerp(
+            waypoints[lowerIndex].position,
+            waypoints[upperIndex].position,
+            interpolation
+        );
 
-        Quaternion targetRotation = Quaternion.Slerp(waypoints[lowerIndex].rotation, waypoints[upperIndex].rotation, interpolation);
+        Quaternion targetRotation = Quaternion.Slerp(
+            waypoints[lowerIndex].rotation,
+            waypoints[upperIndex].rotation,
+            interpolation
+        );
 
-        rope.position = Vector3.MoveTowards(rope.position, targetPosition, ropeMoveSpeed * Time.deltaTime);
+        rope.position = Vector3.MoveTowards(
+            rope.position,
+            targetPosition,
+            ropeMoveSpeed * Time.deltaTime
+        );
 
-        rope.rotation = Quaternion.RotateTowards(rope.rotation, targetRotation, ropeMoveSpeed * 90f * Time.deltaTime);
-    }
-
-    private void Update()
-    {
-        if (!gameStarted || gameEnded)
-        {
-            return;
-        }
-
-        UpdateRopePosition();
+        rope.rotation = Quaternion.RotateTowards(
+            rope.rotation,
+            targetRotation,
+            ropeMoveSpeed * 90f * Time.deltaTime
+        );
     }
 
     private void CheckGameOver()
