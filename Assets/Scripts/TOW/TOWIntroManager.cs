@@ -12,6 +12,8 @@ public class TOWIntroManager : MonoBehaviour
 
     public GameObject skipPrompt;
 
+    public GameObject musicManager;
+
     private bool introFinished = false;
 
     private void Start()
@@ -23,6 +25,11 @@ public class TOWIntroManager : MonoBehaviour
             skipPrompt.SetActive(true);
         }
 
+        if (musicManager != null)
+        {
+            musicManager.SetActive(false);
+        }
+
         if (introTimeline != null)
         {
             introTimeline.stopped += OnTimelineFinished;
@@ -30,7 +37,6 @@ public class TOWIntroManager : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("No Intro Timeline assigned!");
             EndIntro();
         }
     }
@@ -42,8 +48,7 @@ public class TOWIntroManager : MonoBehaviour
             return;
         }
 
-        if (Keyboard.current != null &&
-            Keyboard.current.enterKey.wasPressedThisFrame)
+        if (Keyboard.current != null && Keyboard.current.enterKey.wasPressedThisFrame)
         {
             EndIntro();
         }
@@ -83,9 +88,12 @@ public class TOWIntroManager : MonoBehaviour
             introCamera.SetActive(false);
         }
 
-        IsIntroPlaying = false;
+        if (musicManager != null)
+        {
+            musicManager.SetActive(true);
+        }
 
-        Debug.Log("TOW INTRO: FINISHED!");
+        IsIntroPlaying = false;
     }
 
     private void OnDestroy()
