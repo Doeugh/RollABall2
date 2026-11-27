@@ -11264,7 +11264,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e9925f7e35bb524b9c772667af049b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  knockbackMultiplier: 1.6
+  knockbackMultiplier: 1.65
   minimumImpactSpeed: 2
   upwardForce: 0.05
   affectPlayers: 1
