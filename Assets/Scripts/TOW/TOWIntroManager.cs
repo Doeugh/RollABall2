@@ -50,8 +50,20 @@ public class TOWIntroManager : MonoBehaviour
 
         if (Keyboard.current != null && Keyboard.current.enterKey.wasPressedThisFrame)
         {
-            EndIntro();
+            SkipIntro();
         }
+    }
+
+    private void SkipIntro()
+    {
+        if (introTimeline != null)
+        {
+            introTimeline.time = introTimeline.duration;
+
+            introTimeline.Evaluate();
+        }
+
+        EndIntro();
     }
 
     private void OnTimelineFinished(PlayableDirector director)
