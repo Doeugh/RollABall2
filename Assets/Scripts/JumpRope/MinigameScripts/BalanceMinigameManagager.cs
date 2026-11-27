@@ -11,11 +11,17 @@ public class BalanceMinigameManagager : MonoBehaviour
     public Transform balancePlatform;
     public PlayerMinigameController ballController;
 
-    public float minigameDuration = 5f;
+    public float minigameDuration = 2.5f;
 
     public float rotationInterval = 1.5f;
     public float maxPlatformAngle = 15f;
     public float platformRotationSpeed = 4f;
+
+    public float playerRotationSpeed = 60f;
+    public float nextRoundDelay = 0.5f;
+
+    private bool playerHasActed = false;
+    private float roundDelayTimer = 0f;
 
     public GameObject minigameUI;
 
@@ -107,6 +113,9 @@ public class BalanceMinigameManagager : MonoBehaviour
         timer = minigameDuration;
         rotationTimer = 0f;
 
+        playerHasActed = false;
+        roundDelayTimer = 0f;
+
         while (timer > 0f && minigameActive)
         {
             timer -= Time.deltaTime;
@@ -121,18 +130,63 @@ public class BalanceMinigameManagager : MonoBehaviour
 
     private void RotatePlatform()
     {
-        rotationTimer += Time.deltaTime;
+        float rotationInput = 0f;
 
-        if (rotationTimer >= rotationInterval)
+        if (Input.GetKey(KeyCode.A))
         {
-            rotationTimer = 0f;
+            rotationInput = 1f;
+        }
+        else if (Input.GetKey(KeyCode.D))
+        {
+            rotationInput = -1f;
+        }
 
-            targetAngle = originalPlatformAngle + Random.Range(-maxPlatformAngle, maxPlatformAngle);
+        if (!playerHasActed)
+        {
+            rotationTimer += Time.deltaTime;
+
+            if (rotationTimer >= rotationInterval)
+            {
+                rotationTimer = 0f;
+
+                targetAngle = Random.Range(
+                    originalPlatformAngle - maxPlatformAngle,
+                    originalPlatformAngle + maxPlatformAngle
+                );
+            }
+
+            if (rotationInput != 0f)
+            {
+                playerHasActed = true;
+                roundDelayTimer = 0f;
+            }
+        }
+        else
+        {
+            targetAngle += rotationInput * playerRotationSpeed * Time.deltaTime;
+
+            targetAngle = Mathf.Clamp(
+                targetAngle,
+                originalPlatformAngle - maxPlatformAngle,
+                originalPlatformAngle + maxPlatformAngle
+            );
+
+            roundDelayTimer += Time.deltaTime;
+
+            if (roundDelayTimer >= nextRoundDelay)
+            {
+                playerHasActed = false;
+                rotationTimer = 0f;
+            }
         }
 
         Quaternion targetRotation = Quaternion.Euler(0f, targetAngle, 0f);
 
-        balancePlatform.localRotation = Quaternion.Slerp(balancePlatform.localRotation, targetRotation, platformRotationSpeed * Time.deltaTime);
+        balancePlatform.localRotation = Quaternion.Slerp(
+            balancePlatform.localRotation,
+            targetRotation,
+            platformRotationSpeed * Time.deltaTime
+        );
     }
 
     public void PlayerFellOff()
@@ -186,5 +240,10 @@ public class BalanceMinigameManagager : MonoBehaviour
         Vector3 force = mainPlayer.transform.right * direction * knockbackForce;
 
         mainPlayerRB.AddForce(force, ForceMode.Impulse);
+    }
+
+    public void EnableStageTwo()
+    {
+        minigameDuration = 3f;
     }
 }

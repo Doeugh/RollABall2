@@ -4,6 +4,8 @@ public class MinigameTrigger : MonoBehaviour
 {
     public BalanceMinigameManagager minigameManagager;
 
+    public bool enableStageTwo = false;
+
     private static bool hasBeenEntered = false;
 
     private void OnTriggerEnter(Collider other)
@@ -21,6 +23,11 @@ public class MinigameTrigger : MonoBehaviour
 
         if (minigameManagager != null)
         {
+            if (enableStageTwo)
+            {
+                minigameManagager.EnableStageTwo();
+            }
+
             minigameManagager.StartMinigame();
         }
     }
