@@ -3138,7 +3138,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   knockbackMultiplier: 1.5
   minimumImpactSpeed: 2
-  upwardForce: 0.1
+  upwardForce: 0.05
   affectPlayers: 1
   affectEnemies: 1
 --- !u!1 &1034288266
@@ -3999,7 +3999,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   knockbackMultiplier: 1.1
   minimumImpactSpeed: 2
-  upwardForce: 0.1
+  upwardForce: 0.05
   affectPlayers: 1
   affectEnemies: 1
 --- !u!1 &1097686723
@@ -4851,7 +4851,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   knockbackMultiplier: 1.1
   minimumImpactSpeed: 2
-  upwardForce: 0.1
+  upwardForce: 0.05
   affectPlayers: 1
   affectEnemies: 1
 --- !u!1 &1300573427
@@ -5098,7 +5098,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   knockbackMultiplier: 1.1
   minimumImpactSpeed: 2
-  upwardForce: 0.1
+  upwardForce: 0.05
   affectPlayers: 1
   affectEnemies: 1
 --- !u!1 &1306118041
@@ -10349,7 +10349,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   knockbackMultiplier: 1.1
   minimumImpactSpeed: 2
-  upwardForce: 0.1
+  upwardForce: 0.05
   affectPlayers: 1
   affectEnemies: 1
 --- !u!1 &1734873327
@@ -11264,9 +11264,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e9925f7e35bb524b9c772667af049b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  knockbackMultiplier: 1.5
+  knockbackMultiplier: 1.6
   minimumImpactSpeed: 2
-  upwardForce: 0.5
+  upwardForce: 0.05
   affectPlayers: 1
   affectEnemies: 1
 --- !u!1001 &2053259227
